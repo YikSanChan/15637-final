@@ -52,9 +52,9 @@ class Menu(models.Model):
 
     @staticmethod
     def get_today_menu():
-        today = timezone.localtime(timezone.now()).today().date()
-        tomorrow = today + datetime.timedelta(days=1)
-        return Menu.objects.filter(meal_date__gt=today, meal_date__lt=tomorrow)
+        # today = timezone.localtime(timezone.now()).today().date()
+        # tomorrow = today + datetime.timedelta(days=1)
+        # return Menu.objects.filter(meal_date__gt=today, meal_date__lt=tomorrow)
         return []
 
     @staticmethod
