@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Page</title>
+</head>
+<body>
+
+<p>dashboard</p>
+{%for biz in restaurant %}
+    <p>{{ biz }}</p>
+{%endfor%}
+
+
+
+<table>
+    <tr>
+        <th>Buyer/Seller</th>
+        <th>Menu</th>
+        <th>Sub Total</th>
+    </tr>
+    {%for tuple in form%}
+    <tr>
+        {%if tuple.is_seller %}
+            <td>seller</td>
+        {%else%}
+            <td>buyer</td>
+        {%endif%}
+        <td>{{ tuple.menu }}</td>
+        <td>{{ tuple.SubTotal }}</td>
+    </tr>
+    {%endfor%}
+</table>
+
+</body>
+</html>

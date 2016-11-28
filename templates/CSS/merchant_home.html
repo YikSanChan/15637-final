@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Merchant Home</title>
+</head>
+<body>
+
+<a href="{% url 'browse_profile' profile.id %}">My Profile</a>
+<a href="{% url 'browse_menu' profile.user.id %}">Browse Menu</a>
+<a href="{% url 'logout' %}">Logout</a>
+
+<p>Welcome to CSS,
+    {% if profile.type %}merchant{% else %}student{% endif %}
+    {{ profile.user.username }}
+</p>
+
+
+<a href="{% url 'create_menu' %}">Create Menu</a>
+
+<br>
+
+{{ data.to_html | safe }}
+
+{% for menu in menus %}
+
+    Merchant:{{ menu.merchant.username}}<br>
+    {% if menu.image %}
+        <img src="{{ menu.image.url }}" width="200px">
+    {% else %}
+        <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
+    {% endif %}<br>
+    Type: {% if menu.is_lunch %}Lunch{% else %}Dinner{% endif %}<br>
+    Food: {{menu.food_name }}<br>
+    Price: {{ menu.price }}<br>
+    <a href="{% url 'edit_menu' menu.id %}">Edit Menu</a><br>
+    <a href="{% url 'delete_menu' menu.id %}">Delete Menu</a><br>
+    <br>
+
+{% endfor %}
+
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Menu Page</title>
+</head>
+<body>
+
+<p>
+    <a href="{% url 'home' %}">Home</a>
+</p>
+
+<p>Create Menu</p>
+
+<form method="post" action="{% url 'create_menu' %}" enctype="multipart/form-data">
+<table>
+    {{ form }}
+</table>
+
+<input type="submit" value="Create" />
+<input type="hidden" value="{{ user.id }}" name="user_id">
+{% csrf_token %}
+</form>
+
+</body>
+</html>

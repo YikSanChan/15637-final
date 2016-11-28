@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exchange Page</title>
+</head>
+<body>
+
+<p>Exchange Platform</p>
+
+<form method="post" action="{% url 'exchange' %}">
+<table>
+    {{ form }}
+</table>
+
+<input type="submit" value="Create" />
+{% csrf_token %}
+</form>
+
+</body>
+</html>

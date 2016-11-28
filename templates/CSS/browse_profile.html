@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Browse Profile</title>
+</head>
+<body>
+
+<p><a href="{% url 'home' %}">Home</a></p>
+
+<p>{{ profile.user.username }}'s Profile</p>
+
+{% if profile.image %}
+    <img src="{{ profile.image.url }}" width="200px">
+{% else %}
+    <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
+{% endif %}<br>
+
+username: {{ profile.user.username }}<br>
+type: {{ profile.type }}<br>
+website: {{ profile.website }}<br>
+address: {{ profile.address }}<br>
+summary: {{ profile.summary }}<br>
+
+<a href="{% url 'edit_profile' profile.id %}">Edit Profile</a>
+
+</body>
+</html>

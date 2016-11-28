@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer's Order Review Page</title>
+</head>
+<body>
+
+<p>Order Review</p>
+
+{% for order in unreviewed %}
+<form method="post" action="{% url 'order_review' %}">
+<table>
+    {% csrf_token %}
+    Food: {{order.menu.food_name }}<br>
+    Quantity: {{order.quantity }}<br>
+    {{form}}
+</table>
+<input type="hidden" value="{{ order.id }}" name="order_id">
+<input type="submit" value="Review" />
+</form>
+{% endfor %}
+</body>
+</html>

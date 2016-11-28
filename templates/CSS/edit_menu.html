@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Menu</title>
+</head>
+<body>
+
+<p>
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'browse_menu' menu.merchant_id %}">Browse Menu</a>
+</p>
+
+{% if menu.image %}
+    <img src="{{ menu.image.url }}" width="200px">
+{% else %}
+    <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
+{% endif %}<br>
+
+<form method="post" action="{% url 'edit_menu' menu.id %}" enctype="multipart/form-data">
+{% csrf_token %}
+    {{ form.as_p }}
+<input type="submit" value="Save Edit" />
+</form>
+
+</body>
+</html>
