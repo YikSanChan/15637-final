@@ -430,9 +430,12 @@ def review_order(request, order_id):
     # order.rating = int(request.POST['rating'])
     # order.save()
     if request.method == 'GET':
-        return render(request, 'CSS/review_order.html', {'form': ReviewForm(), 'order': order_to_review})
-
-    return HttpResponse("review done")
+        return render(request, 'CSS/review_order.html', {'form': ReviewForm(instance=order_to_review), 'order': order_to_review})
+    form = ReviewForm(request.POST, instance=order_to_review)
+    if not form.is_valid():
+        return render(request, 'CSS/review_order.html', {'form': form, 'order': order_to_review})
+    form.save()
+    return redirect(reverse('home'))
 
 
 @login_required

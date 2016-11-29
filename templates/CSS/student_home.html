@@ -36,8 +36,10 @@
         <a href="{% url 'edit_order' order.id %}">Edit Order</a><br>
         <a href="{% url 'delete_order' order.id %}">Delete Order</a><br>
         <a href="{% url 'pickup_order' order.id %}">Pickup Order</a><br>
+    {% elif order.rating == 0 %}
+        <a href="{% url 'review_order' order.id %}">Add Review</a>
     {% else %}
-        <a href="{% url 'review_order' order.id %}">Review</a>
+        Rating: {{ order.rating }}
     {% endif %}
     <br>
 
