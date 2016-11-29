@@ -16,7 +16,6 @@
     {{ profile.user.username }}
 </p>
 
-
 <a href="{% url 'create_menu' %}">Create Menu</a>
 
 <br>
@@ -25,7 +24,7 @@
 
 {% for menu in menus %}
 
-    Merchant:{{ menu.merchant.username}}<br>
+    Merchant:<a href="{% url 'browse_menu' menu.merchant.id %}">{{ menu.merchant.username}}</a><br>
     {% if menu.image %}
         <img src="{{ menu.image.url }}" width="200px">
     {% else %}

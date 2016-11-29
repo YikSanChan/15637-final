@@ -18,7 +18,7 @@
 
 {% for order, count in user_today_orders %}
 
-    Merchant:{{ order.menu.merchant.username}}<br>
+    Merchant:<a href="{% url 'browse_menu' order.menu.merchant.id %}">{{ order.menu.merchant.username}}</a><br>
     Already ordered {{ count }} times!<br>
     {% if order.menu.image %}
         <img src="{{ order.menu.image.url }}" width="200px">
@@ -40,7 +40,7 @@
 <form method="post" action="{% url 'create_order' %}">
 {% csrf_token %}
 
-    Merchant:{{ menu.merchant.username}}<br>
+    Merchant:<a href="{% url 'browse_menu' menu.merchant.id %}">{{ menu.merchant.username}}</a><br>
     Already ordered {{ count }} times!<br>
     {% if menu.image %}
         <img src="{{ menu.image.url }}" width="200px">
