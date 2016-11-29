@@ -30,7 +30,7 @@ urlpatterns = [
 
     url(r'^pickup-notification/(?P<menu_id>\d+)$', CSS.views.pickup_notification, name='pickup_notification'),
     url(r'^exchange/$', CSS.views.exchange, name='exchange'),
-    url(r'^order-review/$', CSS.views.order_review, name='order_review'),
+    url(r'^review-order/(?P<order_id>\d+)$', CSS.views.review_order, name='review_order'),
     url(r'^dashboard/$', CSS.views.dashboard, name='dashboard'),
 
     url(r'^pickup-order/(?P<order_id>\d+)$', CSS.views.pickup_order, name='pickup_order'),

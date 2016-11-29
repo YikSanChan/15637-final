@@ -182,8 +182,7 @@ def register(request):
 
 
 def confirm_registration(request, username, token):
-    # Things happen after new user receive confirmation email,
-    # and click the link.
+    # Things happen after new user receive confirmation email, and click the link.
     new_user = User.objects.filter(username=username)[0]
     new_user.is_active = True
     new_user.save()
@@ -374,6 +373,7 @@ def pickup_notification(request, menu_id):
     if menu.merchant != request.user:
         return redirect(reverse('home'))
     email_list = Order.objects.filter(menu=menu).filter(is_taken=False).values_list('customer__email')
+    email_list = [email[0] for email in list(email_list)]
     email_body = "Thank you for choosing %s.\n" % menu.merchant.username
     for loc in menu.location_set.all().values_list('name', 'googleMapURL'):
         email_body += "If you choose %s, please reference %s.\n" % (loc[0], loc[1])
@@ -381,8 +381,8 @@ def pickup_notification(request, menu_id):
     send_mail(subject="Please pickup your food box ASAP",
               message=email_body,
               from_email="yiksanc@andrew.cmu.edu",
-              recipient_list=[email_list])
-    return HttpResponse("Please pickup your food box ASAP")
+              recipient_list=email_list)
+    return redirect(reverse('home'))
 
 
 @login_required
@@ -417,10 +417,13 @@ def dashboard(request):
 
 
 @login_required
-def order_review(request):
+def review_order(request, order_id):
+    order_to_review = get_object_or_404(Order, id=order_id)
+    if order_to_review.customer != request.user:
+        return redirect(reverse('home'))
     if request.method == 'GET':
         unreviewed = Order.objects.filter(customer=request.user, rating=0)
-        return render(request, 'CSS/review.html', {'unreviewed': unreviewed, 'form': ReviewForm()})
+        return render(request, 'CSS/review_order.html', {'unreviewed': unreviewed, 'form': ReviewForm()})
 
     order_id = int(request.POST['order_id'])
     order = get_object_or_404(Order, id=order_id)
