@@ -337,6 +337,8 @@ def browse_order(request, customer_id):
 @login_required
 def edit_order(request, order_id):
     order_to_edit = get_object_or_404(Order, id=order_id)
+    if order_to_edit.customer_id != request.user.id:
+        return redirect(reverse('home'))
     if request.method == 'GET':
         form = OrderQuantityForm(instance=order_to_edit, initial={'menu_id': order_to_edit.menu_id})
         return render(request, 'CSS/edit_order.html', {'form': form, 'order': order_to_edit})
