@@ -44,6 +44,7 @@ class Menu(models.Model):
     )
     is_lunch = models.BooleanField(default=True, choices=MEAL_TYPE)
     meal_date = models.DateTimeField(default=timezone.localtime(timezone.now()))
+    # meal_date = models.DateTimeField(default=timezone.now)
     price = models.IntegerField(default=8)
     image = models.ImageField(upload_to="CSS/images/menus", blank=True)
 

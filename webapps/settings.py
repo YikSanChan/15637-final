@@ -26,7 +26,7 @@ SECRET_KEY = 'u)5wpv)b7-!s^stu*a_qu6$1*9@qhdx70$kx0nf32xqi^my(7-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['powerful-taiga-87227.herokuapp.com']
+ALLOWED_HOSTS = ['powerful-taiga-87227.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
@@ -51,15 +51,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.andrew.cmu.edu'
-# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.andrew.cmu.edu'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 # EMAIL_HOST_USER = 'yiksanc'
 # EMAIL_HOST_PASSWORD = '2803302013Cys?ABCDE'
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + "@andrew.cmu.edu"
-# EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + "@andrew.cmu.edu"
+EMAIL_USE_TLS = True
 
 ROOT_URLCONF = 'webapps.urls'
 
