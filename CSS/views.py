@@ -430,9 +430,10 @@ def order_review(request):
 @login_required
 def pickup_order(request, order_id):
     order_to_pickup = get_object_or_404(Order, id=order_id)
-    if order_to_pickup.is_taken:
-        return HttpResponse("Your order is already taken.")
+    if order_to_pickup.customer != request.user or order_to_pickup.is_taken:
+        return redirect(reverse('home'))
     order_to_pickup.is_taken = True
+    order_to_pickup.save()
     return redirect(reverse('home'))
 
 

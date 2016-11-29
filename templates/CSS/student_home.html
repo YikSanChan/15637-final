@@ -16,6 +16,8 @@
     {{ profile.user.username }}
 </p>
 
+<h1>Today's Orders</h1>
+
 {% for order, count in user_today_orders %}
 
     Merchant:<a href="{% url 'browse_menu' order.menu.merchant.id %}">{{ order.menu.merchant.username}}</a><br>
@@ -27,14 +29,21 @@
     {% endif %}<br>
     Type: {% if order.menu.is_lunch %}Lunch{% else %}Dinner{% endif %}<br>
     Food: {{order.menu.food_name }}<br>
-    Price: {{ order.menu.price }}<br>
-    Quantity: {{ order.quantity }}<br>
-    Location: {{ order.location }}<br>
-    <a href="{% url 'edit_order' order.id %}">Edit Order</a><br>
-    <a href="{% url 'delete_order' order.id %}">Delete Order</a><br>
+    {% if not order.is_taken %}
+        Price: {{ order.menu.price }}<br>
+        Quantity: {{ order.quantity }}<br>
+        Location: {{ order.location }}<br>
+        <a href="{% url 'edit_order' order.id %}">Edit Order</a><br>
+        <a href="{% url 'delete_order' order.id %}">Delete Order</a><br>
+        <a href="{% url 'pickup_order' order.id %}">Pickup Order</a><br>
+    {% else %}
+        <a href="#">Review</a>
+    {% endif %}
     <br>
 
 {% endfor %}
+
+<h1>Today's Menus</h1>
 
 {% for menu, form, count in unordered_menus_forms %}
 <form method="post" action="{% url 'create_order' %}">
