@@ -290,7 +290,6 @@ def browse_menu(request, merchant_id):
 @login_required
 def edit_menu(request, menu_id):
     menu_to_edit = get_object_or_404(Menu, id=menu_id)
-    print(type(menu_to_edit.merchant_id), menu_to_edit.merchant_id, type(request.user.id), request.user.id)
     if menu_to_edit.merchant_id != request.user.id:
         return redirect(reverse('home'))
     if request.method == 'GET':
