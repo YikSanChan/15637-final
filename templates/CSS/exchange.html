@@ -8,14 +8,59 @@
 
 <p>Exchange Platform</p>
 
-<form method="post" action="{% url 'exchange' %}">
-<table>
-    {{ form }}
-</table>
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><p>Hi, you can trade the extra food box here. </p>
+            <p>Please post your Buy / Sell information.</p></div>
+        <div class="panel-body" style="font-size:20px">
 
-<input type="submit" value="Create" />
-{% csrf_token %}
-</form>
+            <form method="post" action="{% url 'exchange' %}">
+                <div class="file-field input-field">
+                    <p> Menu: {{ form.menu }} Sell/Buy: {{ form.is_seller }}  Quantity: {{ form.quantity }}</p>
+                    <table>
+                        <tr>
+                            <th>Location: </th>
+                            <th>Contact: </th>
+                        </tr>
+                        <tr>
+                            <td>{{ form.location }}</td>
+                            <td>{{ form.contact }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <!--<div>-->
+                    <!--<table>-->
+                        <!--{{ form }}-->
+                    <!--</table>-->
+                <!--</div>-->
+                <input type="submit" value="Create"/>
+                {% csrf_token %}
+            </form>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Post Time</th>
+                <th>User</th>
+                <th>Buyer/Seller</th>
+                <th>Quantity</th>
+                <th>Menu</th>
+                <th>Location</th>
+                <th>Contact</th>
+            </tr>
+
+            {%for tuple in items %}
+            <tr>
+                <td>{{ tuple.create_time}}</td>
+                <td>{{ tuple.user}}</td>
+                {%if tuple.is_seller %} <td>Sell</td> {%else%} <td>Buy</td> {%endif%}
+                <td>{{ tuple.quantity }}</td>
+                <td>{{ tuple.menu }}</td>
+                <td>{{ tuple.location }}</td>
+                <td>{{ tuple.contact }}</td>
+            </tr>
+            {%endfor%}
+        </table>
+    </div>
 
 </body>
 </html>

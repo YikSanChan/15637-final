@@ -108,7 +108,7 @@ class ReviewForm(forms.ModelForm):
 class ExchangeForm(forms.ModelForm):
     class Meta:
         model = Exchange
-        fields = ('menu', 'is_seller', 'quantity',)
+        fields = ('menu', 'is_seller', 'quantity', 'location', 'contact')
 
 
 class AddLocationForm(forms.ModelForm):

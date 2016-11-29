@@ -395,8 +395,12 @@ def pickup_notification(request, menu_id):
 
 @login_required
 def exchange(request):
+    items = Exchange.objects.all().order_by('-create_time')
+    context = {'items': items}
+
     if request.method == 'GET':
-        return render(request, 'CSS/exchange.html', {'form': ExchangeForm()})
+        context['form']=ExchangeForm()
+        return render(request, 'CSS/exchange.html', context)
 
     menu_id = int(request.POST['menu'])
     menu = get_object_or_404(Menu, id=menu_id)
@@ -404,24 +408,13 @@ def exchange(request):
     new_exchange = Exchange.objects.create(menu=menu,
                                            user=request.user,
                                            quantity=request.POST['quantity'],
-                                           is_seller=request.POST['is_seller'])
+                                           is_seller=request.POST['is_seller'],
+                                           location=request.POST['location'],
+                                           contact=request.POST['contact'])
     new_exchange.save()
+    context['form'] = ExchangeForm()
 
-    Exchange.objects.annotate(count_bento=Count('quantity'))
-
-    return redirect(reverse('home'))
-
-
-@login_required
-def dashboard(request):
-    # Group in SQL --> annotate in Django
-    form = Exchange.objects.values('menu', 'is_seller').annotate(SubTotal=Sum('quantity'))
-    restaurant = []
-    for menu in form:
-        restaurant.append((Menu.objects.get(pk=menu['menu']), menu['SubTotal']))
-    context = {'form': form, 'restaurant': restaurant}
-
-    return render(request, 'CSS/dashboard.html', context)
+    return render(request, 'CSS/exchange.html', context)
 
 
 @login_required

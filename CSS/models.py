@@ -121,6 +121,9 @@ class Exchange(models.Model):
     )
     is_seller = models.BooleanField(default=True, choices=Exchange_TYPE)
     quantity = models.IntegerField(default=1)
+    location = models.TextField(max_length=50, blank=True)
+    contact = models.TextField(max_length=50, blank=True)
+    create_time = models.DateTimeField(auto_now_add=True, blank=True)
 
 
 class RatingSummary(models.Model):
