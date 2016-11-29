@@ -285,6 +285,9 @@ def create_menu(request):
 @login_required
 def browse_menu(request, merchant_id):
     merchant = get_object_or_404(User, id=merchant_id)
+    # browse student's menu
+    if not merchant.profile.type:
+        return redirect(reverse('home'))
     profile_id = merchant.profile.id
     return render(request, 'CSS/browse_menu.html',
                   {'menus': Menu.get_menus(merchant), 'profile_id': profile_id, 'user_id': request.user.id,
@@ -333,6 +336,9 @@ def create_order(request):
 @login_required
 def browse_order(request, customer_id):
     customer = get_object_or_404(User, id=customer_id)
+    # browse merchant's order
+    if customer.profile.type:
+        return redirect(reverse('home'))
     orders = Order.objects.filter(customer=customer)
     return render(request, 'CSS/browse_order.html', {'orders': orders, 'username': customer.username})
 
