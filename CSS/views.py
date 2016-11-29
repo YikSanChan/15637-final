@@ -245,7 +245,8 @@ def home(request):
 @login_required
 def browse_profile(request, profile_id):
     profile_to_browse = get_object_or_404(Profile, id=profile_id)
-    return render(request, 'CSS/browse_profile.html', {'profile': profile_to_browse, 'user_id': request.user.id})
+    return render(request, 'CSS/browse_profile.html',
+                  {'profile': profile_to_browse, 'user_id': request.user.id, 'is_merchant': profile_to_browse.type})
 
 
 @login_required

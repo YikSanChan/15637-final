@@ -9,7 +9,11 @@
 
 <p>
     <a href="{% url 'home' %}">Home</a>
-    <a href="{% url 'browse_menu' profile.user.id %}">Browse Menu</a>
+    {% if is_merchant %}
+        <a href="{% url 'browse_menu' profile.user.id %}">Browse Menu</a>
+    {% else %}
+        <a href="{% url 'browse_order' profile.user.id %}">Browse Order</a>
+    {% endif %}
 </p>
 
 <p>{{ profile.user.username }}'s Profile</p>
