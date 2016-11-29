@@ -18,6 +18,7 @@
         <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
     {% endif %}<br>
     Food:{{ order.menu.food_name }}<br>
+    Date: {{ order.menu.meal_date|date:"D d M Y" }}<br>
     Quantity:{{ order.quantity }}<br>
     <a href="{% url 'edit_order' order.id %}">Edit Order</a><br>
     <a href="{% url 'delete_order' order.id %}">Delete Order</a><br>
