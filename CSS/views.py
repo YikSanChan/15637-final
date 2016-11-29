@@ -15,127 +15,144 @@ from pandas import DataFrame
 from math import sqrt
 
 
-# def CF(request):
-#     dataset = {}
-#
-#     def pearson_correlation(person1, person2):
-#         # To get both rated items
-#         both_rated = {}
-#         for item in dataset[person1]:
-#             if item in dataset[person2]:
-#                 both_rated[item] = 1
-#         number_of_ratings = len(both_rated)
-#         # Checking for number of ratings in common
-#         if number_of_ratings == 0:
-#             return 0
-#         # Add up all the preferences of each user
-#         person1_preferences_sum = sum([dataset[person1][item] for item in both_rated])
-#         person2_preferences_sum = sum([dataset[person2][item] for item in both_rated])
-#         # Sum up the squares of preferences of each user
-#         person1_square_preferences_sum = sum([pow(dataset[person1][item], 2) for item in both_rated])
-#         person2_square_preferences_sum = sum([pow(dataset[person2][item], 2) for item in both_rated])
-#         # Sum up the product value of both preferences for each item
-#         product_sum_of_both_users = sum([dataset[person1][item] * dataset[person2][item] for item in both_rated])
-#         # Calculate the pearson score
-#         numerator_value = product_sum_of_both_users - (
-#             person1_preferences_sum * person2_preferences_sum / number_of_ratings)
-#         denominator_value = sqrt(
-#             (person1_square_preferences_sum - pow(person1_preferences_sum, 2) / number_of_ratings) * (
-#                 person2_square_preferences_sum - pow(person2_preferences_sum, 2) / number_of_ratings))
-#         if denominator_value == 0:
-#             return 0
-#         else:
-#             r = float(numerator_value) / denominator_value
-#             return r
-#
-#     def user_recommendations(person):
-#         # Gets recommendations for a person by using a weighted average of every other user's rankings
-#         totals = {}
-#         simSums = {}
-#         rankings_list = []
-#         for other in dataset:
-#             # don't compare me to myself
-#             if other == person:
-#                 continue
-#             sim = pearson_correlation(person, other)
-#             # ignore scores of zero or lower
-#             if sim <= 0:
-#                 continue
-#             for item in dataset[other]:
-#                 # only score menu i haven't eaten
-#                 if item not in dataset[person] or dataset[person][item] == 0:
-#                     # Similrity * score
-#                     totals.setdefault(item, 0)
-#                     totals[item] += float(dataset[other][item]) * sim
-#                     # sum of similarities
-#                     simSums.setdefault(item, 0)
-#                     simSums[item] += sim
-#                     # Create the normalized list
-#         rankings = [(total / simSums[item], item) for item, total in totals.items()]
-#
-#         ratings = {}
-#         for item, total in totals.items():
-#             rate = total / simSums[item]
-#             ratings.update({item: rate})
-#             user = User.objects.get(id=person)
-#             menu = Menu.objects.get(id=item)
-#             newRating = RatingSummary.objects.create(user=user, menu=menu, rating=rate)
-#             newRating.save()
-#
-#         print({person: ratings})
-#
-#         recommendataions_list = [recommend_item for score, recommend_item in rankings]
-#         return recommendataions_list
-#
-#     # reset the old rating result
-#     RatingSummary.objects.all().delete()
-#     for i in User.objects.all():
-#         OneUserData = {}
-#         userOrder = Order.objects.filter(customer=i.id)
-#         for u in userOrder:
-#             OneUserData.update({u.menu.id: u.rating})
-#             user = User.objects.get(id=i.id)
-#             menu = Menu.objects.get(id=u.menu.id)
-#             newRating = RatingSummary.objects.create(user=user, menu=menu, rating=u.rating)
-#             newRating.save()
-#         dataset.update({i.id: OneUserData})
-#
-#     for i in User.objects.all():
-#         user_recommendations(i.id)
-#     return redirect(reverse('home'))
-#
-#
-# def daily(request):
-#     query = Menu.get_today_menu()
-#     today_lunch = Menu.get_today_lunch()
-#     print("today lunch: ", today_lunch)
-#
-#     today_dinner = Menu.get_today_dinner()
-#     print("today dinner: ", today_dinner)
-#
-#     dailyMenu = []
-#     for q in query:
-#         dailyMenu.append(Menu.objects.get(id=q.id))
-#
-#     dailyRecommender = []
-#     for i in Profile.objects.filter(type=False):
-#         priority = []
-#         for d in dailyMenu:
-#             MenuList = Menu.objects.filter(food_name=d.food_name, meal_date__lte=datetime.date.today())
-#             ratingSum = 0
-#             for m in MenuList:
-#                 ratingSum += RatingSummary.objects.get(user=i.user, menu=m).rating
-#             ratingAvg = ratingSum / len(MenuList)
-#             pair = (d.id, ratingAvg)
-#             priority.append(pair)
-#
-#         def getKey(item):
-#             return item[1]  # sort by rating, not menu id
-#
-#         sortedMenu = sorted(priority, key=getKey, reverse=True)
-#         print(i.user.id, "'s preference: ", sortedMenu)
-#         dailyRecommender.append(sortedMenu)
-#     return HttpResponse(dailyRecommender)
+def CF(request):
+
+    dataset = {}
+
+    def pearson_correlation(person1, person2):
+        # To get both rated items
+        both_rated = {}
+        for item in dataset[person1]:
+            if item in dataset[person2]:
+                both_rated[item] = 1
+        number_of_ratings = len(both_rated)
+        # Checking for number of ratings in common
+        if number_of_ratings == 0:
+            return 0
+        # Add up all the preferences of each user
+        person1_preferences_sum = sum([dataset[person1][item] for item in both_rated])
+        person2_preferences_sum = sum([dataset[person2][item] for item in both_rated])
+        # Sum up the squares of preferences of each user
+        person1_square_preferences_sum = sum([pow(dataset[person1][item], 2) for item in both_rated])
+        person2_square_preferences_sum = sum([pow(dataset[person2][item], 2) for item in both_rated])
+        # Sum up the product value of both preferences for each item
+        product_sum_of_both_users = sum([dataset[person1][item] * dataset[person2][item] for item in both_rated])
+        # Calculate the pearson score
+        numerator_value = product_sum_of_both_users - (
+            person1_preferences_sum * person2_preferences_sum / number_of_ratings)
+        denominator_value = sqrt(
+            (person1_square_preferences_sum - pow(person1_preferences_sum, 2) / number_of_ratings) * (
+                person2_square_preferences_sum - pow(person2_preferences_sum, 2) / number_of_ratings))
+        if denominator_value == 0:
+            return 0
+        else:
+            r = float(numerator_value) / denominator_value
+            return r
+
+    def user_reommendations(person):
+        # Gets recommendations for a person by using a weighted average of every other user's rankings
+        totals = {}
+        simSums = {}
+        rankings_list = []
+        for other in dataset:
+            # don't compare me to myself
+            if other == person:
+                continue
+            sim = pearson_correlation(person, other)
+            # ignore scores of zero or lower
+            if sim <= 0:
+                continue
+            for item in dataset[other]:
+                # only score menu i haven't eaten
+                if item not in dataset[person] or dataset[person][item] == 0:
+                    # Similrity * score
+                    totals.setdefault(item, 0)
+                    totals[item] += float(dataset[other][item]) * sim
+                    # sum of similarities
+                    simSums.setdefault(item, 0)
+                    simSums[item] += sim
+                    # Create the normalized list
+        rankings = [(total / simSums[item], item) for item, total in totals.items()]
+
+        ratings = {}
+        for item, total in totals.items():
+            rate = total / simSums[item]
+            ratings.update({item: rate})
+            user = User.objects.get(id=person)
+            menu = Menu.objects.get(id=item)
+            newRating = RatingSummary.objects.create(user=user, menu=menu, rating=rate)
+            newRating.save()
+
+        print({person: ratings})
+
+        recommendataions_list = [recommend_item for score, recommend_item in rankings]
+        return recommendataions_list
+
+    # reset the old rating result
+    RatingSummary.objects.all().delete()
+    for i in User.objects.all():
+        OneUserData = {}
+        userOrder = Order.objects.filter(customer=i.id)
+        for u in userOrder:
+            OneUserData.update({u.menu.id:u.rating})
+            user = User.objects.get(id=i.id)
+            menu = Menu.objects.get(id=u.menu.id)
+            newRating = RatingSummary.objects.create(user=user, menu=menu, rating=u.rating)
+            newRating.save()
+        dataset.update({i.id:OneUserData})
+
+    for i in User.objects.all():
+        user_reommendations(i.id)
+    return redirect(reverse('home'))
+
+def daily(request):
+    noCF = (len(RatingSummary.objects.all())==0) #If no data in the RatingSummary databse, return home
+    if (noCF):
+        print("No historical rating data")
+        return redirect(reverse('home'))
+    query = Menu.get_today_menu()
+
+    if timezone.localtime(timezone.now()).__lt__(datetime.datetime(2016,11,28,12, tzinfo=datetime.timezone.utc)):
+        today_lunch = Menu.get_today_lunch()
+        query = Menu.get_today_lunch()
+        print("today lunch: ", today_lunch)
+    else:
+        today_dinner=Menu.get_today_dinner()
+        query = Menu.get_today_dinner()
+        print ("today dinner: ", today_dinner)
+
+    dailyMenu = []
+    for q in query:
+        dailyMenu.append(Menu.objects.get(id=q.id))
+
+    dailyRecommender = []
+    for i in Profile.objects.filter(type=False):
+        priority = []
+        for d in dailyMenu:
+            MenuList = Menu.objects.filter(food_name=d.food_name, meal_date__lte=datetime.date.today())
+            ratingSum = 0
+            for m in MenuList:
+                # print("menu", m.id, "user", i.user.id)
+                # print (RatingSummary.objects.filter(user=i.user, menu=m))
+                # print(RatingSummary.objects.get(user=i.user, menu=m))
+                # if len(RatingSummary.objects.get(user=i.user, menu=m))==0:
+                #     return redirect(reverse('home'))
+                # ratingSum += RatingSummary.objects.get(user=i.user, menu=m).rating
+                for r in RatingSummary.objects.filter(user=i.user, menu=m):
+                    ratingSum += r.rating
+
+            ratingAvg=ratingSum/ len(MenuList)
+            pair = (d.id, ratingAvg)
+            priority.append(pair)
+
+        def getKey(item):
+            return item[1] # sort by rating, not menu id
+        sortedMenu=sorted(priority, key=getKey, reverse=True)
+        print(i.user.id, "'s preference: ", sortedMenu)
+        dailyRecommender.append((i.user.id, sortedMenu))
+    # print(dailyRecommender)
+    return HttpResponse(dailyRecommender)
+    # return dailyRecommender
 
 
 @transaction.atomic
