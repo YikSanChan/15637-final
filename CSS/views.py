@@ -374,7 +374,10 @@ def pickup_notification(request, menu_id):
     if menu.merchant != request.user:
         return redirect(reverse('home'))
     email_list = Order.objects.filter(menu=menu).filter(is_taken=False).values_list('customer__email')
-    email_body = """Thank you for choosing %s. Please pickup your food ASAP.""" % menu.merchant.username
+    email_body = "Thank you for choosing %s.\n" % menu.merchant.username
+    for loc in menu.location_set.all().values_list('name', 'googleMapURL'):
+        email_body += "If you choose %s, please reference %s.\n" % (loc[0], loc[1])
+
     send_mail(subject="Please pickup your food box ASAP",
               message=email_body,
               from_email="yiksanc@andrew.cmu.edu",
@@ -435,17 +438,6 @@ def pickup_order(request, order_id):
     order_to_pickup.is_taken = True
     order_to_pickup.save()
     return redirect(reverse('home'))
-
-
-@login_required
-def add_location(request):
-    if request.method == 'GET':
-        return render(request, 'CSS/add_location.html', {'form': AddLocationForm()})
-    form = AddLocationForm(request.POST, request.FILES)
-    if not form.is_valid():
-        return render(request, 'CSS/add_location.html', {'form': form})
-    form.save()
-    return render(request, 'CSS/add_location.html', {'form': AddLocationForm()})
 
 
 def merchant_order_statistics(request):

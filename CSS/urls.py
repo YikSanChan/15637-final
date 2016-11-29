@@ -35,8 +35,6 @@ urlpatterns = [
 
     url(r'^pickup-order/(?P<order_id>\d+)$', CSS.views.pickup_order, name='pickup_order'),
 
-    url(r'^add-location/$', CSS.views.add_location, name='add_location'),
-
     # Recommendation System
     # url(r'^CF/$', CSS.views.CF, name='CF'),
     # url(r'^daily/$', CSS.views.daily, name='daily'),
