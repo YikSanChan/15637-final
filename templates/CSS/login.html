@@ -1,25 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Log In Page</title>
-</head>
-<body>
+{#<!DOCTYPE html>#}
+{#{% load static %}#}
+{#<html lang="en" class="full">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Log In Page</title>#}
+{##}
+{#    <link href="{% static 'CSS/css/full.css' %}" rel="stylesheet">#}
+{##}
+{#</head>#}
+{#<body>#}
+{##}
+{#<p>Login</p>#}
+{##}
+{#<form method="post" action="{% url 'login' %}">#}
+{#{% csrf_token %}#}
+{#<table>#}
+{#    {{ form }}#}
+{#</table>#}
+{##}
+{#<input type="submit" value="login" />#}
+{#<a href="{% url 'register' %}">Register</a>#}
+{#<input type="hidden" name="next" value="{{ next }}" />#}
+{#</form>#}
+{##}
+{#<a href="{% url 'reset' %}">Forget your password</a>#}
+{##}
+{#</body>#}
+{#</html>#}
 
-<p>Login</p>
-
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table>
-    {{ form }}
-</table>
-
-<input type="submit" value="login" />
-<a href="{% url 'register' %}">Register</a>
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
-
-<a href="{% url 'reset' %}">Forget your password</a>
-
-</body>
-</html>
+{% extends 'CSS/base.html' %}
+{% block nav %}
+    <li>
+        <a href="{% url 'register' %}">Register</a>
+    </li>
+    <li>
+        <a href="{% url 'reset' %}">Forget your password</a>
+    </li>
+{% endblock nav %}
+{% block title %}Log In Page{% endblock title %}
+{% block login %}
+    <form class="navbar-form navbar-right" method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+    <div class="form-group">
+      <input type="username" name="username" class="form-control" id="username" value="{{username}}" placeholder="Username" required autofocus>
+    </div>
+    <div class="form-group">
+      <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+    </div>
+    <button type="submit" class="btn btn-success">Sign in</button>
+  </form>
+{% endblock login %}
