@@ -287,7 +287,8 @@ def browse_menu(request, merchant_id):
     merchant = get_object_or_404(User, id=merchant_id)
     profile_id = merchant.profile.id
     return render(request, 'CSS/browse_menu.html',
-                  {'menus': Menu.get_menus(merchant), 'profile_id': profile_id, 'user_id': request.user.id})
+                  {'menus': Menu.get_menus(merchant), 'profile_id': profile_id, 'user_id': request.user.id,
+                   'username': merchant.username})
 
 
 @login_required
@@ -333,7 +334,7 @@ def create_order(request):
 def browse_order(request, customer_id):
     customer = get_object_or_404(User, id=customer_id)
     orders = Order.objects.filter(customer=customer)
-    return render(request, 'CSS/browse_order.html', {'orders': orders})
+    return render(request, 'CSS/browse_order.html', {'orders': orders, 'username': customer.username})
 
 
 @login_required

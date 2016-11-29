@@ -9,6 +9,8 @@
 
 <p><a href="{% url 'home' %}">Home</a></p>
 
+<h1>{{ username }}'s History Orders</h1>
+
 {% for order in orders %}
 
     Merchant:{{ order.menu.merchant.username }}<br>

@@ -12,9 +12,10 @@
     <a href="{% url 'browse_profile' profile_id %}">Browse Profile</a>
 </p>
 
+<h1>{{ username }}'s History Menus</h1>
+
 {% for menu in menus %}
 
-    Merchant:{{ menu.merchant.username}}<br>
     {% if menu.image %}
         <img src="{{ menu.image.url }}" width="200px">
     {% else %}
