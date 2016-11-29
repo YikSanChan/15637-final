@@ -43,34 +43,46 @@ class MenuForm(forms.ModelForm):
          Help pass user_id into clean function
         """
         initial_data = kwargs.pop('initial', None)
+        print("initial data: ", initial_data)
         if initial_data:
             self.user_id = initial_data.pop('user_id', None)
+            self.from_edit = initial_data.pop('from_edit', False)
+            self.previous_is_lunch = initial_data.pop('previous_is_lunch', None)
         super(MenuForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Menu
         fields = ("image", "food_name", "is_lunch", "price")
         widgets = {'image': forms.FileInput()}
-        # fields = ("food_name", "is_lunch", "price")
 
     def clean_is_lunch(self):
         """
         If lunch or dinner's menu for today has already been created, extra create is not allowed
         """
         data = self.cleaned_data['is_lunch']
-        if not self.user_id:
-            return data
         today_menus_status = [menu.is_lunch for menu in Menu.get_today_menu().filter(merchant_id=self.user_id)]
-        if data in today_menus_status:
-            raise forms.ValidationError(
-                _("You have already created a menu for today's %s." % ('lunch' if data else 'dinner')))
+        # form for create menu
+        if not self.from_edit:
+            if data in today_menus_status:
+                raise forms.ValidationError(
+                    _("You have already created a menu for today's %s." % ('lunch' if data else 'dinner')))
+        # form for edit menu
+        else:
+            if len(today_menus_status) == 2 and data != self.previous_is_lunch:
+                    raise forms.ValidationError(
+                        _("You have already created a menu for today's %s." % ('lunch' if data else 'dinner')))
         return data
+
+
 
 
 class OrderQuantityForm(forms.ModelForm):
     location = ModelChoiceField(queryset=Location.objects.all(), empty_label=None)
 
     def __init__(self, *args, **kwargs):
+        """
+        Guarantee students can only choose available location to pick their food.
+        """
         menu_id = None
         initial_data = kwargs.pop('initial', None)
         if initial_data:

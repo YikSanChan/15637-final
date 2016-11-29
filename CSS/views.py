@@ -16,7 +16,6 @@ from math import sqrt
 
 
 def CF(request):
-
     dataset = {}
 
     def pearson_correlation(person1, person2):
@@ -94,32 +93,33 @@ def CF(request):
         OneUserData = {}
         userOrder = Order.objects.filter(customer=i.id)
         for u in userOrder:
-            OneUserData.update({u.menu.id:u.rating})
+            OneUserData.update({u.menu.id: u.rating})
             user = User.objects.get(id=i.id)
             menu = Menu.objects.get(id=u.menu.id)
             newRating = RatingSummary.objects.create(user=user, menu=menu, rating=u.rating)
             newRating.save()
-        dataset.update({i.id:OneUserData})
+        dataset.update({i.id: OneUserData})
 
     for i in User.objects.all():
         user_reommendations(i.id)
     return redirect(reverse('home'))
 
+
 def daily(request):
-    noCF = (len(RatingSummary.objects.all())==0) #If no data in the RatingSummary databse, return home
+    noCF = (len(RatingSummary.objects.all()) == 0)  # If no data in the RatingSummary databse, return home
     if (noCF):
         print("No historical rating data")
         return redirect(reverse('home'))
     query = Menu.get_today_menu()
 
-    if timezone.localtime(timezone.now()).__lt__(datetime.datetime(2016,11,28,12, tzinfo=datetime.timezone.utc)):
+    if timezone.localtime(timezone.now()).__lt__(datetime.datetime(2016, 11, 28, 12, tzinfo=datetime.timezone.utc)):
         today_lunch = Menu.get_today_lunch()
         query = Menu.get_today_lunch()
         print("today lunch: ", today_lunch)
     else:
-        today_dinner=Menu.get_today_dinner()
+        today_dinner = Menu.get_today_dinner()
         query = Menu.get_today_dinner()
-        print ("today dinner: ", today_dinner)
+        print("today dinner: ", today_dinner)
 
     dailyMenu = []
     for q in query:
@@ -141,13 +141,14 @@ def daily(request):
                 for r in RatingSummary.objects.filter(user=i.user, menu=m):
                     ratingSum += r.rating
 
-            ratingAvg=ratingSum/ len(MenuList)
+            ratingAvg = ratingSum / len(MenuList)
             pair = (d.id, ratingAvg)
             priority.append(pair)
 
         def getKey(item):
-            return item[1] # sort by rating, not menu id
-        sortedMenu=sorted(priority, key=getKey, reverse=True)
+            return item[1]  # sort by rating, not menu id
+
+        sortedMenu = sorted(priority, key=getKey, reverse=True)
         print(i.user.id, "'s preference: ", sortedMenu)
         dailyRecommender.append((i.user.id, sortedMenu))
     # print(dailyRecommender)
@@ -286,7 +287,9 @@ def edit_menu(request, menu_id):
     if request.method == 'GET':
         form = MenuForm(instance=menu_to_edit)
         return render(request, 'CSS/edit_menu.html', {'form': form, 'menu': menu_to_edit})
-    form = MenuForm(request.POST, request.FILES, instance=menu_to_edit)
+    previous_is_lunch = True if request.POST['menu_type'] == 'True' else False
+    form = MenuForm(request.POST, request.FILES, instance=menu_to_edit,
+                    initial={'user_id': request.user.id, 'from_edit': True, 'previous_is_lunch': previous_is_lunch})
     if not form.is_valid():
         return render(request, 'CSS/edit_menu.html', {'form': form, 'menu': menu_to_edit})
     form.save()
