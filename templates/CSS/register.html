@@ -1,23 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register Page</title>
-</head>
-<body>
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Register Page</title>#}
+{#</head>#}
+{#<body>#}
+{##}
+{#<p>Register</p>#}
+{##}
+{#<form method="post" action="{% url 'register' %}">#}
+{#<table>#}
+{#    {{ form }}#}
+{#</table>#}
+{##}
+{#<input type="submit" value="Register" />#}
+{#<a href="{% url 'login' %}">Go Back</a>#}
+{#{% csrf_token %}#}
+{#</form>#}
+{##}
+{##}
+{#</body>#}
+{#</html>#}
 
-<p>Register</p>
-
-<form method="post" action="{% url 'register' %}">
-<table>
-    {{ form }}
-</table>
-
-<input type="submit" value="Register" />
-<a href="{% url 'login' %}">Go Back</a>
-{% csrf_token %}
-</form>
-
-
-</body>
-</html>
+{% extends 'CSS/base.html' %}
+{% load static %}
+{% block css %}<link href="{% static 'CSS/css/signin.css' %}" rel="stylesheet">{% endblock css %}
+{% block nav %}
+    <li>
+        <a href="{% url 'login' %}">Login Page</a>
+    </li>
+{% endblock nav %}
+{% block register %}
+    <form method="post" action="{% url 'register' %}">
+        <table>
+            {{ form }}
+        </table>
+        <button type="submit" class="btn btn-success">Register</button>
+        {% csrf_token %}
+    </form>
+{% endblock register %}

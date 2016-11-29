@@ -1,34 +1,5 @@
-{#<!DOCTYPE html>#}
-{#{% load static %}#}
-{#<html lang="en" class="full">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>Log In Page</title>#}
-{##}
-{#    <link href="{% static 'CSS/css/full.css' %}" rel="stylesheet">#}
-{##}
-{#</head>#}
-{#<body>#}
-{##}
-{#<p>Login</p>#}
-{##}
-{#<form method="post" action="{% url 'login' %}">#}
-{#{% csrf_token %}#}
-{#<table>#}
-{#    {{ form }}#}
-{#</table>#}
-{##}
-{#<input type="submit" value="login" />#}
-{#<a href="{% url 'register' %}">Register</a>#}
-{#<input type="hidden" name="next" value="{{ next }}" />#}
-{#</form>#}
-{##}
-{#<a href="{% url 'reset' %}">Forget your password</a>#}
-{##}
-{#</body>#}
-{#</html>#}
-
 {% extends 'CSS/base.html' %}
+
 {% block nav %}
     <li>
         <a href="{% url 'register' %}">Register</a>
@@ -37,7 +8,9 @@
         <a href="{% url 'reset' %}">Forget your password</a>
     </li>
 {% endblock nav %}
+
 {% block title %}Log In Page{% endblock title %}
+
 {% block login %}
     <form class="navbar-form navbar-right" method="post" action="{% url 'login' %}">
       {% csrf_token %}
