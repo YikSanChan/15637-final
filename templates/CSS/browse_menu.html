@@ -22,6 +22,7 @@
     {% endif %}<br>
     Type: {% if menu.is_lunch %}Lunch{% else %}Dinner{% endif %}<br>
     Food: {{menu.food_name }}<br>
+    Time: {{ menu.meal_date|date:"D d M Y" }}<br>
     Price: {{ menu.price }}<br>
     <a href="{% url 'edit_menu' menu.id %}">Edit Menu</a><br>
     <a href="{% url 'delete_menu' menu.id %}">Delete Menu</a><br>
