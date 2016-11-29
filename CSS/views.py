@@ -284,7 +284,8 @@ def create_menu(request):
 @login_required
 def browse_menu(request, merchant_id):
     merchant = get_object_or_404(User, id=merchant_id)
-    return render(request, 'CSS/browse_menu.html', {'menus': Menu.get_menus(merchant)})
+    profile_id = merchant.profile.id
+    return render(request, 'CSS/browse_menu.html', {'menus': Menu.get_menus(merchant), 'profile_id': profile_id})
 
 
 @login_required
