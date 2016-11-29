@@ -24,8 +24,10 @@
     Food: {{menu.food_name }}<br>
     Date: {{ menu.meal_date|date:"D d M Y" }}<br>
     Price: {{ menu.price }}<br>
-    <a href="{% url 'edit_menu' menu.id %}">Edit Menu</a><br>
-    <a href="{% url 'delete_menu' menu.id %}">Delete Menu</a><br>
+    {% if user_id == menu.merchant_id %}
+        <a href="{% url 'edit_menu' menu.id %}">Edit Menu</a><br>
+        <a href="{% url 'delete_menu' menu.id %}">Delete Menu</a><br>
+    {% endif %}
     <br>
 
 {% endfor %}
