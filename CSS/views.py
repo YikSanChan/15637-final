@@ -109,7 +109,9 @@ def daily():
         return redirect(reverse('home'))
     query = Menu.get_today_menu()
 
-    if timezone.localtime(timezone.now()).__lt__(datetime.datetime(2016, 11, 28, 12, tzinfo=datetime.timezone.utc)):
+    today = datetime.datetime.now()
+    y, m, d = today.year, today.month, today.day
+    if timezone.localtime(timezone.now()).__lt__(datetime.datetime(y, m, d, 12, tzinfo=datetime.timezone.utc)):
         today_lunch = Menu.get_today_lunch()
         query = Menu.get_today_lunch()
         print("today lunch: ", today_lunch)
