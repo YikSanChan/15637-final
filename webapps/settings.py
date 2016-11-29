@@ -58,7 +58,8 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 # EMAIL_HOST_USER = 'yiksanc'
 # EMAIL_HOST_PASSWORD = '2803302013Cys?ABCDE'
-DEFAULT_FROM_EMAIL = "%s@andrew.cmu.edu" % EMAIL_HOST_USER
+# DEFAULT_FROM_EMAIL = "%s@andrew.cmu.edu" % EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + "@andrew.cmu.edu"
 EMAIL_USE_TLS = True
 
 ROOT_URLCONF = 'webapps.urls'
