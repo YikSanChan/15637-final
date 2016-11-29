@@ -97,6 +97,9 @@ class Order(models.Model):
     rating = models.IntegerField(blank=True, default=0, choices=Rating_Range)
     comment = models.TextField(max_length=200, blank=True)
 
+    def __str__(self):
+        return "%s buy %s" % (self.customer.username, self.menu.food_name)
+
     @staticmethod
     def get_orders(customer):
         return Order.objects.filter(customer=customer)

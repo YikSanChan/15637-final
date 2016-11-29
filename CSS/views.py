@@ -338,14 +338,22 @@ def browse_order(request, customer_id):
     # browse merchant's order
     if customer.profile.type:
         return redirect(reverse('home'))
-    orders = Order.objects.filter(customer=customer)
-    return render(request, 'CSS/browse_order.html', {'orders': orders, 'username': customer.username})
+    orders = Order.get_orders(customer)
+    ongoing_orders = orders.filter(is_taken=False)
+    finished_orders = orders.filter(is_taken=True)
+    is_reviewed = finished_orders.filter(rating__gt=0)
+    un_reviewed = finished_orders.filter(rating=0)
+    return render(request, 'CSS/browse_order.html',
+                  {'username': customer.username, 'ongoing': ongoing_orders, 'is_reviewed': is_reviewed,
+                   'un_reviewed': un_reviewed})
 
 
 @login_required
 def edit_order(request, order_id):
     order_to_edit = get_object_or_404(Order, id=order_id)
     if order_to_edit.customer_id != request.user.id:
+        return redirect(reverse('home'))
+    if order_to_edit.is_taken:  # not allowed to edit order that is already taken
         return redirect(reverse('home'))
     if request.method == 'GET':
         form = OrderQuantityForm(instance=order_to_edit, initial={'menu_id': order_to_edit.menu_id})
@@ -430,7 +438,8 @@ def review_order(request, order_id):
     # order.rating = int(request.POST['rating'])
     # order.save()
     if request.method == 'GET':
-        return render(request, 'CSS/review_order.html', {'form': ReviewForm(instance=order_to_review), 'order': order_to_review})
+        return render(request, 'CSS/review_order.html',
+                      {'form': ReviewForm(instance=order_to_review), 'order': order_to_review})
     form = ReviewForm(request.POST, instance=order_to_review)
     if not form.is_valid():
         return render(request, 'CSS/review_order.html', {'form': form, 'order': order_to_review})
