@@ -85,6 +85,11 @@
 {% endblock %}
 
 {% block content %}
+    {% if not recommend_list %}
+        <h2>Please add more reviews so that we can recommend menu to you!</h2>
+    {% else %}
+        <h2>We guess you like: {% for menu in recommend_list %}{{ menu }},{% endfor %}...</h2>
+    {% endif %}
      <h1>Today's Orders</h1>
     {% for order, count in user_today_orders %}
         <div class="row marketing" >

@@ -126,8 +126,7 @@ def daily():
 
     print("query", query)
     print("dailyMenu", dailyMenu)
-    dailyRecommender = []
-
+    dailyRecommender = {}
     for i in Profile.objects.filter(type=False):  # only recommend to mechant
         priority = []
         for d in dailyMenu:
@@ -156,7 +155,7 @@ def daily():
 
         sortedMenu = sorted(priority, key=getKey, reverse=True)
         print(i.user.id, "'s preference: ", sortedMenu)
-        dailyRecommender.append((i.user.id, sortedMenu))
+        dailyRecommender[i.user.id] = sortedMenu
     print("recommender", dailyRecommender)
     return dailyRecommender
 
@@ -209,8 +208,6 @@ def reset(request):
 
 @login_required
 def home(request):
-    # CF()
-    # print(daily())
     profile_to_edit = get_object_or_404(Profile, user=request.user)
     if profile_to_edit.type is None:  # user type not yet stored in database
         # if type selected
@@ -229,6 +226,10 @@ def home(request):
         return render(request, 'CSS/merchant_home.html',
                       {'profile': profile_to_edit, 'menus': merchant_menus, 'data': data})
     else:  # student user
+        CF()
+        user_recommended_list = daily()[request.user.id]
+        recommend_menu_id_list = [tuple[0] for tuple in user_recommended_list if tuple[1] > 3]
+        recommend_list = [Menu.objects.get(id=id) for id in recommend_menu_id_list]
         user_today_orders = Order.get_today_orders().filter(customer=request.user)
         user_today_orders_count = [(o, get_sum_by_id(o.menu_id)) for o in user_today_orders]
         ordered_menus = [order.menu for order in user_today_orders]
@@ -240,7 +241,8 @@ def home(request):
                       {'profile': profile_to_edit,
                        'user_today_orders': user_today_orders_count,
                        'unordered_menus': unordered_menus,
-                       'unordered_menus_forms': menu_form_list})
+                       'unordered_menus_forms': menu_form_list,
+                       'recommend_list': recommend_list})
 
 
 @login_required
