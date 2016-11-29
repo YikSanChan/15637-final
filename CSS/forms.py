@@ -43,7 +43,6 @@ class MenuForm(forms.ModelForm):
          Help pass user_id into clean function
         """
         initial_data = kwargs.pop('initial', None)
-        print("initial data: ", initial_data)
         if initial_data:
             self.user_id = initial_data.pop('user_id', None)
             self.from_edit = initial_data.pop('from_edit', False)
@@ -60,20 +59,17 @@ class MenuForm(forms.ModelForm):
         If lunch or dinner's menu for today has already been created, extra create is not allowed
         """
         data = self.cleaned_data['is_lunch']
+        error_msg = "You have already created a menu for today's %s." % ('lunch' if data else 'dinner')
         today_menus_status = [menu.is_lunch for menu in Menu.get_today_menu().filter(merchant_id=self.user_id)]
         # form for create menu
         if not self.from_edit:
             if data in today_menus_status:
-                raise forms.ValidationError(
-                    _("You have already created a menu for today's %s." % ('lunch' if data else 'dinner')))
+                raise forms.ValidationError(_(error_msg))
         # form for edit menu
         else:
             if len(today_menus_status) == 2 and data != self.previous_is_lunch:
-                    raise forms.ValidationError(
-                        _("You have already created a menu for today's %s." % ('lunch' if data else 'dinner')))
+                raise forms.ValidationError(_(error_msg))
         return data
-
-
 
 
 class OrderQuantityForm(forms.ModelForm):

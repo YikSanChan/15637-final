@@ -38,6 +38,6 @@ urlpatterns = [
     url(r'^add-location/$', CSS.views.add_location, name='add_location'),
 
     # Recommendation System
-    url(r'^CF/$', CSS.views.CF, name='CF'),
-    url(r'^daily/$', CSS.views.daily, name='daily'),
+    # url(r'^CF/$', CSS.views.CF, name='CF'),
+    # url(r'^daily/$', CSS.views.daily, name='daily'),
 ]

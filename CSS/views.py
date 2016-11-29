@@ -15,7 +15,7 @@ from pandas import DataFrame
 from math import sqrt
 
 
-def CF(request):
+def CF():
     dataset = {}
 
     def pearson_correlation(person1, person2):
@@ -82,8 +82,6 @@ def CF(request):
             newRating = RatingSummary.objects.create(user=user, menu=menu, rating=rate)
             newRating.save()
 
-        print({person: ratings})
-
         recommendataions_list = [recommend_item for score, recommend_item in rankings]
         return recommendataions_list
 
@@ -102,10 +100,9 @@ def CF(request):
 
     for i in User.objects.all():
         user_reommendations(i.id)
-    return redirect(reverse('home'))
 
 
-def daily(request):
+def daily():
     noCF = (len(RatingSummary.objects.all()) == 0)  # If no data in the RatingSummary databse, return home
     if (noCF):
         print("No historical rating data")
@@ -125,24 +122,31 @@ def daily(request):
     for q in query:
         dailyMenu.append(Menu.objects.get(id=q.id))
 
+    print("query", query)
+    print("dailyMenu", dailyMenu)
     dailyRecommender = []
-    for i in Profile.objects.filter(type=False):
+
+    for i in Profile.objects.filter(type=False):  # only recommend to mechant
         priority = []
         for d in dailyMenu:
             MenuList = Menu.objects.filter(food_name=d.food_name, meal_date__lte=datetime.date.today())
+            # if the item never show up before, we score them lower
             ratingSum = 0
-            for m in MenuList:
-                # print("menu", m.id, "user", i.user.id)
-                # print (RatingSummary.objects.filter(user=i.user, menu=m))
-                # print(RatingSummary.objects.get(user=i.user, menu=m))
-                # if len(RatingSummary.objects.get(user=i.user, menu=m))==0:
-                #     return redirect(reverse('home'))
-                # ratingSum += RatingSummary.objects.get(user=i.user, menu=m).rating
-                for r in RatingSummary.objects.filter(user=i.user, menu=m):
-                    ratingSum += r.rating
+            if (len(MenuList) == 0):
+                pair = (d.id, 0)
+            else:
+                for m in MenuList:
+                    # print("menu", m.id, "user", i.user.id)
+                    # print (RatingSummary.objects.filter(user=i.user, menu=m))
+                    # print(RatingSummary.objects.get(user=i.user, menu=m))
+                    # if len(RatingSummary.objects.get(user=i.user, menu=m))==0:
+                    #     return redirect(reverse('home'))
+                    # ratingSum += RatingSummary.objects.get(user=i.user, menu=m).rating
+                    for r in RatingSummary.objects.filter(user=i.user, menu=m):
+                        ratingSum += r.rating
 
-            ratingAvg = ratingSum / len(MenuList)
-            pair = (d.id, ratingAvg)
+                ratingAvg = ratingSum / len(MenuList)
+                pair = (d.id, ratingAvg)
             priority.append(pair)
 
         def getKey(item):
@@ -151,9 +155,8 @@ def daily(request):
         sortedMenu = sorted(priority, key=getKey, reverse=True)
         print(i.user.id, "'s preference: ", sortedMenu)
         dailyRecommender.append((i.user.id, sortedMenu))
-    # print(dailyRecommender)
-    return HttpResponse(dailyRecommender)
-    # return dailyRecommender
+    print("recommender", dailyRecommender)
+    return dailyRecommender
 
 
 @transaction.atomic
@@ -205,6 +208,8 @@ def reset(request):
 
 @login_required
 def home(request):
+    # CF()
+    # print(daily())
     profile_to_edit = get_object_or_404(Profile, user=request.user)
     if profile_to_edit.type is None:  # user type not yet stored in database
         # if type selected
@@ -229,7 +234,6 @@ def home(request):
         unordered_menus = list(set(Menu.get_today_menu()) - set(ordered_menus))
         menu_form_list = [(menu, OrderQuantityForm(initial={'menu_id': menu.id}), get_sum_by_id(menu.id)) for menu in
                           unordered_menus]
-        print(menu_form_list)
 
         return render(request, 'CSS/student_home.html',
                       {'profile': profile_to_edit,
@@ -247,6 +251,8 @@ def browse_profile(request, profile_id):
 @login_required
 def edit_profile(request, profile_id):
     profile_to_edit = get_object_or_404(Profile, id=profile_id)
+    if int(profile_id) != request.user.profile.id:
+        return redirect(reverse('home'))
     if request.method == 'GET':
         form = EditProfileForm(instance=profile_to_edit)
         return render(request, 'CSS/edit_profile.html', {'form': form, 'profile': profile_to_edit})
@@ -284,6 +290,7 @@ def browse_menu(request, merchant_id):
 @login_required
 def edit_menu(request, menu_id):
     menu_to_edit = get_object_or_404(Menu, id=menu_id)
+
     if request.method == 'GET':
         form = MenuForm(instance=menu_to_edit)
         return render(request, 'CSS/edit_menu.html', {'form': form, 'menu': menu_to_edit})
