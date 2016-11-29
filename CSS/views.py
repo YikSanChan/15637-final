@@ -360,25 +360,19 @@ def delete_order(request, order_id):
 
 
 @login_required
-def pickup_notification(request):
-    # url = pyqrcode.create('http://chengdugourmet.com/')
-    # url.svg('uca.svg', scale=4)
-
-    # email_list = [o.customer.email for o in Order.objects.filter(is_taken=False)]
-    email_list = ['evan.chanyiksan@gmail.com']
-    email_body = """
-        Thank you for choosing Chinese Stomach Savior. Please pickup your food box ASAP.
-        """
+def pickup_notification(request, menu_id):
+    """
+    Send message to students who order merchant's menu but haven't taken food.
+    """
+    menu = get_object_or_404(Menu, id=menu_id)
+    if menu.merchant != request.user:
+        return redirect(reverse('home'))
+    email_list = Order.objects.filter(menu=menu).filter(is_taken=False).values_list('customer__email')
+    email_body = """Thank you for choosing %s. Please pickup your food ASAP.""" % menu.merchant.username
     send_mail(subject="Please pickup your food box ASAP",
               message=email_body,
               from_email="yiksanc@andrew.cmu.edu",
               recipient_list=[email_list])
-    # subject, from_email, to = 'hello', 'yiksanc@andrew.cmu.edu', 'evan.chanyiksan@gmail.com'
-    # text_content = 'This is an important message.'
-    # html_content = '<img src="uca.svg">'
-    # msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    # msg.attach_alternative(html_content, "text/html")
-    # msg.send()
     return HttpResponse("Please pickup your food box ASAP")
 
 

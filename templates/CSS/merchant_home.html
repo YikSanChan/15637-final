@@ -20,11 +20,14 @@
 
 <br>
 
+<h1>Today's Orders</h1>
+
 {{ data.to_html | safe }}
+
+<h1>Today's Menus</h1>
 
 {% for menu in menus %}
 
-    Merchant:<a href="{% url 'browse_menu' menu.merchant.id %}">{{ menu.merchant.username}}</a><br>
     {% if menu.image %}
         <img src="{{ menu.image.url }}" width="200px">
     {% else %}
@@ -34,6 +37,7 @@
     Food: {{menu.food_name }}<br>
     Price: {{ menu.price }}<br>
     <a href="{% url 'edit_menu' menu.id %}">Edit Menu</a><br>
+    <a href="{% url 'pickup_notification' menu.id %}">Send Notification</a><br>
     <a href="{% url 'delete_menu' menu.id %}">Delete Menu</a><br>
     <br>
 

@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^edit-order/(?P<order_id>\d+)$', CSS.views.edit_order, name='edit_order'),
     url(r'^delete-order/(?P<order_id>\d+)$', CSS.views.delete_order, name='delete_order'),
 
-    url(r'^pickup-notification/$', CSS.views.pickup_notification, name='pickup_notification'),
+    url(r'^pickup-notification/(?P<menu_id>\d+)$', CSS.views.pickup_notification, name='pickup_notification'),
     url(r'^exchange/$', CSS.views.exchange, name='exchange'),
     url(r'^order-review/$', CSS.views.order_review, name='order_review'),
     url(r'^dashboard/$', CSS.views.dashboard, name='dashboard'),
