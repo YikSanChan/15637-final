@@ -46,7 +46,7 @@ class Menu(models.Model):
     meal_date = models.DateTimeField(default=timezone.localtime(timezone.now()))
     # meal_date = models.DateTimeField(default=timezone.now)
     price = models.IntegerField(default=8)
-    image = models.ImageField(upload_to="CSS/images/menus", blank=True)
+    image = models.ImageField(upload_to="CSS/images/menus", blank=True, null=True)
 
     def __str__(self):
         return self.food_name
