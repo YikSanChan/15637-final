@@ -421,14 +421,16 @@ def review_order(request, order_id):
     order_to_review = get_object_or_404(Order, id=order_id)
     if order_to_review.customer != request.user:
         return redirect(reverse('home'))
+    # if request.method == 'GET':
+    #     unreviewed = Order.objects.filter(customer=request.user, rating=0)
+    #     return render(request, 'CSS/review_order.html', {'unreviewed': unreviewed, 'form': ReviewForm()})
+    #
+    # order_id = int(request.POST['order_id'])
+    # order = get_object_or_404(Order, id=order_id)
+    # order.rating = int(request.POST['rating'])
+    # order.save()
     if request.method == 'GET':
-        unreviewed = Order.objects.filter(customer=request.user, rating=0)
-        return render(request, 'CSS/review_order.html', {'unreviewed': unreviewed, 'form': ReviewForm()})
-
-    order_id = int(request.POST['order_id'])
-    order = get_object_or_404(Order, id=order_id)
-    order.rating = int(request.POST['rating'])
-    order.save()
+        return render(request, 'CSS/review_order.html', {'form': ReviewForm(), 'order': order_to_review})
 
     return HttpResponse("review done")
 

@@ -37,7 +37,7 @@
         <a href="{% url 'delete_order' order.id %}">Delete Order</a><br>
         <a href="{% url 'pickup_order' order.id %}">Pickup Order</a><br>
     {% else %}
-        <a href="#">Review</a>
+        <a href="{% url 'review_order' order.id %}">Review</a>
     {% endif %}
     <br>
 

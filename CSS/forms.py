@@ -102,7 +102,7 @@ class OrderQuantityForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ('rating',)
+        fields = ('rating', 'comment', )
 
 
 class ExchangeForm(forms.ModelForm):
