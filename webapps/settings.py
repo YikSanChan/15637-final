@@ -20,8 +20,8 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'u)5wpv)b7-!s^stu*a_qu6$1*9@qhdx70$kx0nf32xqi^my(7-'
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY='u)5wpv)b7-!s^stu*a_qu6$1*9@qhdx70$kx0nf32xqi^my(7-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -54,12 +54,11 @@ MIDDLEWARE = [
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.andrew.cmu.edu'
-# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_HOST_USER = 'yiksanc'
-EMAIL_HOST_PASSWORD = '2803302013Cys?ABCDE'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+# EMAIL_HOST_USER = 'yiksanc'
+# EMAIL_HOST_PASSWORD = '2803302013Cys?ABCDE'
 DEFAULT_FROM_EMAIL = "%s@andrew.cmu.edu" % EMAIL_HOST_USER
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + "@andrew.cmu.edu"
 EMAIL_USE_TLS = True
 
 ROOT_URLCONF = 'webapps.urls'
