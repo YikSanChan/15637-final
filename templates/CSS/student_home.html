@@ -1,73 +1,146 @@
-<!DOCTYPE html>
+{#<!DOCTYPE html>#}
+{#{% load static %}#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Student Home</title>#}
+{#</head>#}
+{#<body>#}
+{##}
+{#<p>Welcome to CSS,#}
+{#    {% if profile.type %}merchant{% else %}student{% endif %}#}
+{#    {{ profile.user.username }}#}
+{#</p>#}
+{##}
+{#<h1>Today's Orders</h1>#}
+{##}
+{#{% for order, count in user_today_orders %}#}
+{##}
+{#    Merchant:<a href="{% url 'browse_menu' order.menu.merchant.id %}">{{ order.menu.merchant.username}}</a><br>#}
+{#    Already ordered {{ count }} times!<br>#}
+{#    {% if order.menu.image %}#}
+{#        <img src="{{ order.menu.image.url }}" width="200px">#}
+{#    {% else %}#}
+{#        <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">#}
+{#    {% endif %}<br>#}
+{#    Type: {% if order.menu.is_lunch %}Lunch{% else %}Dinner{% endif %}<br>#}
+{#    Food: {{order.menu.food_name }}<br>#}
+{#    {% if not order.is_taken %}#}
+{#        Price: {{ order.menu.price }}<br>#}
+{#        Quantity: {{ order.quantity }}<br>#}
+{#        Location: {{ order.location }}<br>#}
+{#        <a href="{% url 'edit_order' order.id %}">Edit Order</a><br>#}
+{#        <a href="{% url 'delete_order' order.id %}">Delete Order</a><br>#}
+{#        <a href="{% url 'pickup_order' order.id %}">Pickup Order</a><br>#}
+{#    {% elif order.rating == 0 %}#}
+{#        <a href="{% url 'review_order' order.id %}">Add Review</a>#}
+{#    {% else %}#}
+{#        Rating: {{ order.rating }}#}
+{#    {% endif %}#}
+{#    <br>#}
+{##}
+{#{% endfor %}#}
+{##}
+{#<h1>Today's Menus</h1>#}
+{##}
+{#{% for menu, form, count in unordered_menus_forms %}#}
+{#<form method="post" action="{% url 'create_order' %}">#}
+{#{% csrf_token %}#}
+{##}
+{#    Merchant:<a href="{% url 'browse_menu' menu.merchant.id %}">{{ menu.merchant.username}}</a><br>#}
+{#    Already ordered {{ count }} times!<br>#}
+{#    {% if menu.image %}#}
+{#        <img src="{{ menu.image.url }}" width="200px">#}
+{#    {% else %}#}
+{#        <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">#}
+{#    {% endif %}<br>#}
+{#    Type: {% if menu.is_lunch %}Lunch{% else %}Dinner{% endif %}<br>#}
+{#    Food: {{menu.food_name }}<br>#}
+{#    Price: {{ menu.price }}<br>#}
+{#    {{ form }}#}
+{#    <input type="hidden" value="{{ menu.id }}" name="menu_id">#}
+{#    <input type="submit" value="Save Order" /><br><br><br>#}
+{##}
+{#</form>#}
+{#{% endfor %}#}
+{##}
+{#</body>#}
+{#</html>#}
+{##}
+{% extends 'CSS/base.html' %}
+
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Student Home</title>
-</head>
-<body>
 
-<a href="{% url 'browse_profile' profile.id %}">My Profile</a>
-<a href="{% url 'browse_order' profile.user.id %}">Browse Order</a>
-<a href="{% url 'exchange' %}">Exchange Order</a>
-<a href="{% url 'logout' %}">Logout</a>
+{% block css %}
+    <link href="{% static 'CSS/css/signin.css' %}" rel="stylesheet">
+{% endblock css %}
 
-<p>Welcome to CSS,
-    {% if profile.type %}merchant{% else %}student{% endif %}
-    {{ profile.user.username }}
-</p>
+{% block title %}Student Home{% endblock title %}
 
-<h1>Today's Orders</h1>
+{% block nav %}
+    <li><a href="{% url 'browse_profile' profile.id %}">My Profile</a></li>
+    <li><a href="{% url 'browse_order' profile.user.id %}">Browse Order</a></li>
+    <li><a href="{% url 'exchange' %}">Exchange Order</a></li>
+    <li><a href="{% url 'logout' %}">Logout</a></li>
+{% endblock %}
 
-{% for order, count in user_today_orders %}
+{% block content %}
+     <h1>Today's Orders</h1>
+    {% for order, count in user_today_orders %}
+        <div class="row marketing" >
+            <div class="col-lg-4">
+                {% if order.menu.image %}
+                    <img src="{{ order.menu.image.url }}" height="400px">
+                {% else %}
+                    <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="400px">
+                {% endif %}
+            </div>
+            <div class="col-lg-8">
+                <h2>Merchant:<a href="{% url 'browse_menu' order.menu.merchant.id %}">{{ order.menu.merchant.username}}</a></h2>
 
-    Merchant:<a href="{% url 'browse_menu' order.menu.merchant.id %}">{{ order.menu.merchant.username}}</a><br>
-    Already ordered {{ count }} times!<br>
-    {% if order.menu.image %}
-        <img src="{{ order.menu.image.url }}" width="200px">
-    {% else %}
-        <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
-    {% endif %}<br>
-    Type: {% if order.menu.is_lunch %}Lunch{% else %}Dinner{% endif %}<br>
-    Food: {{order.menu.food_name }}<br>
-    {% if not order.is_taken %}
-        Price: {{ order.menu.price }}<br>
-        Quantity: {{ order.quantity }}<br>
-        Location: {{ order.location }}<br>
-        <a href="{% url 'edit_order' order.id %}">Edit Order</a><br>
-        <a href="{% url 'delete_order' order.id %}">Delete Order</a><br>
-        <a href="{% url 'pickup_order' order.id %}">Pickup Order</a><br>
-    {% elif order.rating == 0 %}
-        <a href="{% url 'review_order' order.id %}">Add Review</a>
-    {% else %}
-        Rating: {{ order.rating }}
-    {% endif %}
-    <br>
+                <h2>Already ordered {{ count }} times!</h2>
+                <h2>Type: {% if order.menu.is_lunch %}Lunch{% else %}Dinner{% endif %}</h2>
+                <h2>Food: {{order.menu.food_name }}</h2>
 
-{% endfor %}
+                {% if not order.is_taken %}
+                    <h2>Price: {{ order.menu.price }}</h2>
+                    <h2>Quantity: {{ order.quantity }}</h2>
+                    <h2>Location: {{ order.location }}</h2>
+                    <a href="{% url 'edit_order' order.id %}">Edit Order</a><br>
+                    <a href="{% url 'delete_order' order.id %}">Delete Order</a><br>
+                    <a href="{% url 'pickup_order' order.id %}">Pickup Order</a><br>
+                {% elif order.rating == 0 %}
+                    <a href="{% url 'review_order' order.id %}">Add Review</a>
+                {% else %}
+                    <h2>Rating: {{ order.rating }}</h2>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    <h1>Today's Menus</h1>
+    {% for menu, form, count in unordered_menus_forms %}
+    <form method="post" action="{% url 'create_order' %}">
+        {% csrf_token %}
 
-<h1>Today's Menus</h1>
+        <div class="col-lg-4">
+            {% if menu.image %}
+                <img src="{{ menu.image.url }}" width="200px">
+            {% else %}
+                <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
+            {% endif %}
+        </div>
+        <div class="col-lg-8">
+            <h2>Merchant:<a href="{% url 'browse_menu' menu.merchant.id %}">{{ menu.merchant.username}}</a></h2>
+            <h2>Already ordered {{ count }} times!</h2>
+            <h2>Type: {% if menu.is_lunch %}Lunch{% else %}Dinner{% endif %}</h2>
+            <h2>Food: {{menu.food_name }}</h2>
+            <h2>Price: {{ menu.price }}</h2>
+            {{ form }}
+            <button type="submit" class="btn btn-success">Save Order</button>
+        </div>
+        <input type="hidden" value="{{ menu.id }}" name="menu_id">
 
-{% for menu, form, count in unordered_menus_forms %}
-<form method="post" action="{% url 'create_order' %}">
-{% csrf_token %}
 
-    Merchant:<a href="{% url 'browse_menu' menu.merchant.id %}">{{ menu.merchant.username}}</a><br>
-    Already ordered {{ count }} times!<br>
-    {% if menu.image %}
-        <img src="{{ menu.image.url }}" width="200px">
-    {% else %}
-        <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
-    {% endif %}<br>
-    Type: {% if menu.is_lunch %}Lunch{% else %}Dinner{% endif %}<br>
-    Food: {{menu.food_name }}<br>
-    Price: {{ menu.price }}<br>
-    {{ form }}
-    <input type="hidden" value="{{ menu.id }}" name="menu_id">
-    <input type="submit" value="Save Order" /><br><br><br>
-
-</form>
-{% endfor %}
-
-</body>
-</html>
+    </form>
+    {% endfor %}
+{% endblock %}

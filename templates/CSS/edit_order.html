@@ -1,28 +1,30 @@
-<!DOCTYPE html>
+{% extends 'CSS/base.html' %}
+
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Order</title>
-</head>
-<body>
 
+{% block title %}Edit Order{% endblock title %}
 
-Merchant:{{ order.menu.merchant.username }}<br>
-{% if order.menu.image %}
-    <img src="{{ order.menu.image.url }}" width="200px">
-{% else %}
-    <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
-{% endif %}<br>
-Food:{{ order.menu.food_name }}<br>
-Location: {{ order.location }}<br>
-<form method="post" action="{% url 'edit_order' order.id %}">
-{% csrf_token %}
-<table>
-    {{ form.as_table }}
-</table>
-<input type="submit" value="Save Edit" />
-</form>
-
-</body>
-</html>
+{% block content %}
+    <h1>Edit Order</h1>
+    <div class="row marketing">
+        <div class="col-lg-5">
+        {% if order.menu.image %}
+            <img src="{{ order.menu.image.url }}" width="400px">
+        {% else %}
+            <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
+        {% endif %}
+        </div>
+        <div class="col-lg-7">
+            <h2>Merchant:{{ order.menu.merchant.username }}</h2>
+            <h2>Food:{{ order.menu.food_name }}</h2>
+            <h2>Location: {{ order.location }}</h2>
+            <form method="post" action="{% url 'edit_order' order.id %}">
+                {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <button type="submit" class="btn btn-success">Save Edit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

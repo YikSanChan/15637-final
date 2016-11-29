@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en" class="full">
+<html lang="en" {% block full %}{% endblock %}>
 <head>
     <meta charset="UTF-8">
     <title>{% block title%}{% endblock title %}</title>
 
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'CSS/css/full.css' %}" rel="stylesheet">
+    <link href="{% static 'CSS/css/signin.css' %}" rel="stylesheet">
     {% block css %}{% endblock css %}
 </head>
 <body>
@@ -34,16 +35,18 @@
         <!-- /.container -->
     </nav>
 
-    <div class="container">
-        {% block register %}{% endblock register %}
+    <div class="container" style="background-color: white">
+        {% block content %}{% endblock content %}
     </div> <!-- /container -->
 
 </body>
 
-<script type="text/javascript">
+{% block js %}
+    <script type="text/javascript">
     $(document).ready(function() {
         $( ".errorlist" ).hide();
     });
-</script>
+    </script>
+{% endblock %}
 
 </html>

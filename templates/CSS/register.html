@@ -1,8 +1,8 @@
 {% extends 'CSS/base.html' %}
 
-{% load static %}
+{% block full %}class="full"{% endblock %}
 
-{% block css %}<link href="{% static 'CSS/css/signin.css' %}" rel="stylesheet">{% endblock css %}
+{% load static %}
 
 {% block nav %}
     <li>
@@ -12,12 +12,12 @@
 
 {% block title %}Register{% endblock title %}
 
-{% block register %}
-    <form method="post" action="{% url 'register' %}">
+{% block content %}
+    <form method="post" action="{% url 'register' %}" class="form-signin">
         <table>
             {{ form }}
         </table>
         <button type="submit" class="btn btn-success">Register</button>
         {% csrf_token %}
     </form>
-{% endblock register %}
+{% endblock content %}
