@@ -17,13 +17,15 @@
     <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
 {% endif %}<br>
 
-username: {{ profile.user.username }}<br>
-type: {{ profile.type }}<br>
-website: {{ profile.website }}<br>
-address: {{ profile.address }}<br>
-summary: {{ profile.summary }}<br>
+Username: {{ profile.user.username }}<br>
+Type: {% if profile.type %}Merchant{% else %}Student{% endif %} <br>
+Website: {{ profile.website }}<br>
+Address: {{ profile.address }}<br>
+Summary: {{ profile.summary }}<br>
 
+{% if user_id == profile.user_id %}
 <a href="{% url 'edit_profile' profile.id %}">Edit Profile</a>
+{% endif %}
 
 </body>
 </html>

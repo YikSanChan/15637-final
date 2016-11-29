@@ -245,7 +245,7 @@ def home(request):
 @login_required
 def browse_profile(request, profile_id):
     profile_to_browse = get_object_or_404(Profile, id=profile_id)
-    return render(request, 'CSS/browse_profile.html', {'profile': profile_to_browse})
+    return render(request, 'CSS/browse_profile.html', {'profile': profile_to_browse, 'user_id': request.user.id})
 
 
 @login_required
@@ -343,7 +343,6 @@ def edit_order(request, order_id):
         form = OrderQuantityForm(instance=order_to_edit, initial={'menu_id': order_to_edit.menu_id})
         return render(request, 'CSS/edit_order.html', {'form': form, 'order': order_to_edit})
     form = OrderQuantityForm(request.POST, instance=order_to_edit, initial={'menu_id': order_to_edit.menu_id})
-    # form = OrderQuantityForm(request.POST, instance=order_to_edit)
     if not form.is_valid():
         return render(request, 'CSS/edit_order.html', {'form': form, 'order': order_to_edit})
     form.save()
