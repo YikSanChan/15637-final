@@ -131,6 +131,7 @@ def daily():
         priority = []
         for d in dailyMenu:
             MenuList = Menu.objects.filter(food_name=d.food_name, meal_date__lte=datetime.date.today())
+            print(MenuList)
             # if the item never show up before, we score them lower
             ratingSum = 0
             if (len(MenuList) == 0):
