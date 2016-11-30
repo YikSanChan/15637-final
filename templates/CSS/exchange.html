@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Exchange Page</title>
-</head>
-<body>
+{% extends 'CSS/base.html' %}
+
+{% load static %}
+
+{% block title %}Exchange{% endblock title %}
 
 <a href="{% url 'home' %}">Home</a>
 
-<p>Exchange Platform</p>
-
+{% block content %}
+    <h1>Exchange Platform</h1>
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading"><p>Hi, you can trade the extra food box here. </p>
@@ -30,11 +28,6 @@
                         </tr>
                     </table>
                 </div>
-                <!--<div>-->
-                    <!--<table>-->
-                        <!--{{ form }}-->
-                    <!--</table>-->
-                <!--</div>-->
                 <input type="submit" value="Create"/>
                 {% csrf_token %}
             </form>
@@ -63,6 +56,4 @@
             {%endfor%}
         </table>
     </div>
-
-</body>
-</html>
+{% endblock %}

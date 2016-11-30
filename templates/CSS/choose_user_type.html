@@ -1,22 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome Page</title>
-</head>
-<body>
+{% extends 'CSS/base.html' %}
 
-<p>Choose User Type!</p>
+{% load static %}
 
-<form method="post" action="{% url 'home' %}">
-{% csrf_token %}
-<table>
-    {{ form }}
-</table>
+{% block title %}Choose User Type{% endblock title %}
 
-<input type="submit" value="Next Step" />
-</form>
-
-
-</body>
-</html>
+{% block content %}
+    <h1>Choose User Type!</h1>
+    <form method="post" action="{% url 'home' %}">
+        {% csrf_token %}
+        <table>
+            {{ form }}
+        </table>
+        <button type="submit" class="btn btn-success">Next Step</button>
+    </form>
+{% endblock %}

@@ -1,38 +1,36 @@
-<!DOCTYPE html>
+{% extends "CSS/base.html" %}
+
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Browse Profile</title>
-</head>
-<body>
 
-<p>
-    <a href="{% url 'home' %}">Home</a>
+{% block title %}Browse Profile{% endblock %}
+
+{% block nav %}
     {% if is_merchant %}
-        <a href="{% url 'browse_menu' profile.user.id %}">Browse Menu</a>
+        <li><a href="{% url 'browse_menu' profile.user.id %}">Browse Menu</a></li>
     {% else %}
-        <a href="{% url 'browse_order' profile.user.id %}">Browse Order</a>
+        <li><a href="{% url 'browse_order' profile.user.id %}">Browse Order</a></li>
     {% endif %}
-</p>
+{% endblock %}
 
-<h1>{{ profile.user.username }}'s Profile</h1>
-
-{% if profile.image %}
-    <img src="{{ profile.image.url }}" width="200px">
-{% else %}
-    <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
-{% endif %}<br>
-
-Username: {{ profile.user.username }}<br>
-Type: {% if profile.type %}Merchant{% else %}Student{% endif %} <br>
-Website: {{ profile.website }}<br>
-Address: {{ profile.address }}<br>
-Summary: {{ profile.summary }}<br>
-
-{% if user_id == profile.user_id %}
-<a href="{% url 'edit_profile' profile.id %}">Edit Profile</a>
-{% endif %}
-
-</body>
-</html>
+{% block content %}
+    <h1>{{ profile.user.username }}'s Profile</h1>
+    <div class="row marketing">
+        <div class="col-lg-5">
+            {% if profile.image %}
+                <img src="{{ profile.image.url }}" width="200px">
+            {% else %}
+                <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
+            {% endif %}
+        </div>
+        <div class="col-lg-7">
+            <h2>Username: {{ profile.user.username }}</h2>
+            <h2>Type: {% if profile.type %}Merchant{% else %}Student{% endif %}</h2>
+            <h2>Website: {{ profile.website }}</h2>
+            <h2>Address: {{ profile.address }}</h2>
+            <h2>Summary: {{ profile.summary }}</h2>
+            {% if user_id == profile.user_id %}
+                <a href="{% url 'edit_profile' profile.id %}" role="button" class="btn btn-success">Edit Profile</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

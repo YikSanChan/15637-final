@@ -1,26 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Menu Page</title>
-</head>
-<body>
+{% extends 'CSS/base.html' %}
 
-<p>
-    <a href="{% url 'home' %}">Home</a>
-</p>
+{% load static %}
 
-<p>Create Menu</p>
+{% block title %}Create Menu{% endblock title %}
 
-<form method="post" action="{% url 'create_menu' %}" enctype="multipart/form-data">
-<table>
-    {{ form }}
-</table>
-
-<input type="submit" value="Create" />
-<input type="hidden" value="{{ user.id }}" name="user_id"/>
-{% csrf_token %}
-</form>
-
-</body>
-</html>
+{% block content %}
+    <h1>Create Menu!</h1>
+    <form method="post" action="{% url 'create_menu' %}" enctype="multipart/form-data">
+        <table>
+            {{ form }}
+        </table>
+        <button type="submit" class="btn btn-success">Create</button>
+        <input type="hidden" value="{{ user.id }}" name="user_id"/>
+        {% csrf_token %}
+    </form>
+{% endblock %}

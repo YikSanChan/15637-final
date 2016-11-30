@@ -1,48 +1,87 @@
-<!DOCTYPE html>
+{#<!DOCTYPE html>#}
+{#{% load static %}#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Merchant Home</title>#}
+{#</head>#}
+{#<body>#}
+{##}
+{#<a href="{% url 'browse_profile' profile.id %}">My Profile</a>#}
+{#<a href="{% url 'browse_menu' profile.user.id %}">Browse Menu</a>#}
+{#<a href="{% url 'logout' %}">Logout</a>#}
+{##}
+{#<p>Welcome to CSS,#}
+{#    {% if profile.type %}merchant{% else %}student{% endif %}#}
+{#    {{ profile.user.username }}#}
+{#</p>#}
+{##}
+{#<a href="{% url 'create_menu' %}">Create Menu</a>#}
+{##}
+{#<br>#}
+{##}
+{#<h1>Today's Orders</h1>#}
+{##}
+{#{{ data.to_html | safe }}#}
+{##}
+{#<h1>Today's Menus</h1>#}
+{##}
+{#{% for menu in menus %}#}
+{##}
+{#    {% if menu.image %}#}
+{#        <img src="{{ menu.image.url }}" width="200px">#}
+{#    {% else %}#}
+{#        <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">#}
+{#    {% endif %}<br>#}
+{#    Type: {% if menu.is_lunch %}Lunch{% else %}Dinner{% endif %}<br>#}
+{#    Food: {{menu.food_name }}<br>#}
+{#    Price: {{ menu.price }}<br>#}
+{#    <a href="{% url 'edit_menu' menu.id %}">Edit Menu</a><br>#}
+{#    <a href="{% url 'pickup_notification' menu.id %}">Send Notification</a><br>#}
+{#    <a href="{% url 'delete_menu' menu.id %}">Delete Menu</a><br>#}
+{#    <br>#}
+{##}
+{#{% endfor %}#}
+{##}
+{##}
+{#</body>#}
+{#</html>#}
+
+
+{% extends 'CSS/base.html' %}
+
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Merchant Home</title>
-</head>
-<body>
 
-<a href="{% url 'browse_profile' profile.id %}">My Profile</a>
-<a href="{% url 'browse_menu' profile.user.id %}">Browse Menu</a>
-<a href="{% url 'logout' %}">Logout</a>
+{% block title %}Merchant Home{% endblock title %}
 
-<p>Welcome to CSS,
-    {% if profile.type %}merchant{% else %}student{% endif %}
-    {{ profile.user.username }}
-</p>
+{% block nav %}
+    <li><a href="{% url 'browse_profile' profile.id %}">My Profile</a></li>
+    <li><a href="{% url 'browse_menu' profile.user.id %}">Browse Menu</a></li>
+    <li><a href="{% url 'logout' %}">Logout</a></li>
+{% endblock %}
 
-<a href="{% url 'create_menu' %}">Create Menu</a>
-
-<br>
-
-<h1>Today's Orders</h1>
-
-{{ data.to_html | safe }}
-
-<h1>Today's Menus</h1>
-
-{% for menu in menus %}
-
-    {% if menu.image %}
-        <img src="{{ menu.image.url }}" width="200px">
-    {% else %}
-        <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
-    {% endif %}<br>
-    Type: {% if menu.is_lunch %}Lunch{% else %}Dinner{% endif %}<br>
-    Food: {{menu.food_name }}<br>
-    Price: {{ menu.price }}<br>
-    <a href="{% url 'edit_menu' menu.id %}">Edit Menu</a><br>
-    <a href="{% url 'pickup_notification' menu.id %}">Send Notification</a><br>
-    <a href="{% url 'delete_menu' menu.id %}">Delete Menu</a><br>
-    <br>
-
-{% endfor %}
-
-
-</body>
-</html>
+{% block content %}
+    <a href="{% url 'create_menu' %}" class="btn btn-success" role="button">Create Menu</a>
+    <h1>Today's Orders</h1>
+    {{ data.to_html | safe }}
+    <h1>Today's Menus</h1>
+    {% for menu in menus %}
+        <div class="row marketing" >
+            <div class="col-lg-4">
+                {% if menu.image %}
+                    <img src="{{ menu.image.url }}" width="200px">
+                {% else %}
+                    <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
+                {% endif %}
+            </div>
+            <div class="col-lg-8">
+                <h2>Type: {% if menu.is_lunch %}Lunch{% else %}Dinner{% endif %}</h2>
+                <h2>Food: {{menu.food_name }}</h2>
+                <h2>Price: {{ menu.price }}</h2>
+                <a href="{% url 'edit_menu' menu.id %}" class="btn btn-success" role="button">Edit Menu</a>
+                <a href="{% url 'pickup_notification' menu.id %}" class="btn btn-success" role="button">Send Notification</a>
+                <a href="{% url 'delete_menu' menu.id %}" class="btn btn-success" role="button">Delete Menu</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

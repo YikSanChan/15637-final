@@ -1,37 +1,38 @@
-<!DOCTYPE html>
+{% extends 'CSS/base.html' %}
+
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Browse Menu</title>
-</head>
-<body>
 
-<p>
-    <a href="{% url 'home' %}">Home</a>
-    <a href="{% url 'browse_profile' profile_id %}">Browse Profile</a>
-</p>
+{% block title %}Browse Menu{% endblock title %}
 
-<h1>{{ username }}'s History Menus</h1>
+{% block nav %}
+    <li><a href="{% url 'browse_profile' profile_id %}">Browse Profile</a></li>
+{% endblock %}
 
-{% for menu in menus %}
+{% block content %}
+    <h1>{{ username }}'s History Menus</h1>
+    {% for menu in menus %}
+        <div class="row marketing" >
+            <div class="col-lg-4">
+                {% if menu.image %}
+                    <img src="{{ menu.image.url }}" width="200px">
+                {% else %}
+                    <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
+                {% endif %}
+            </div>
+            <div class="col-lg-8">
+                <h2>Type: {% if menu.is_lunch %}Lunch{% else %}Dinner{% endif %}</h2>
+                <h2>Food: {{menu.food_name }}</h2>
+                <h2>Date: {{ menu.meal_date|date:"D d M Y" }}</h2>
+                <h2>Price: {{ menu.price }}</h2>
+                {% if user_id == menu.merchant_id %}
+                    <a href="{% url 'edit_menu' menu.id %}" class="img-responsive" width="200px">Edit Menu</a>
+                    <a href="{% url 'delete_menu' menu.id %}" class="img-responsive" width="200px">Delete Menu</a>
+                {% endif %}
+            </div>
+        </div>
 
-    {% if menu.image %}
-        <img src="{{ menu.image.url }}" width="200px">
-    {% else %}
-        <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
-    {% endif %}<br>
-    Type: {% if menu.is_lunch %}Lunch{% else %}Dinner{% endif %}<br>
-    Food: {{menu.food_name }}<br>
-    Date: {{ menu.meal_date|date:"D d M Y" }}<br>
-    Price: {{ menu.price }}<br>
-    {% if user_id == menu.merchant_id %}
-        <a href="{% url 'edit_menu' menu.id %}">Edit Menu</a><br>
-        <a href="{% url 'delete_menu' menu.id %}">Delete Menu</a><br>
-    {% endif %}
-    <br>
 
-{% endfor %}
 
-</body>
-</html>
+
+    {% endfor %}
+{% endblock %}

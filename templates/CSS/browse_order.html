@@ -1,71 +1,84 @@
-<!DOCTYPE html>
+{% extends 'CSS/base.html' %}
+
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Browse Order</title>
-</head>
-<body>
 
-<p><a href="{% url 'home' %}">Home</a></p>
+{% block title %}Student Home{% endblock title %}
 
-<h1>{{ username }}'s History Orders</h1>
+{% block content %}
+    <h1>{{ username }}'s History Orders</h1>
 
-<h2>Ongoing Orders</h2>
+    <h2>Ongoing Orders</h2>
 
-{% for order in ongoing %}
+    {% for order in ongoing %}
 
-    Merchant:{{ order.menu.merchant.username }}<br>
-    {% if order.menu.image %}
-        <img src="{{ order.menu.image.url }}" width="200px">
-    {% else %}
-        <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
-    {% endif %}<br>
-    Food:{{ order.menu.food_name }}<br>
-    Date: {{ order.menu.meal_date|date:"D d M Y" }}<br>
-    Quantity:{{ order.quantity }}<br>
-    Location: {{ order.location }}<br>
-    <a href="{% url 'edit_order' order.id %}">Edit Order</a><br>
-    <a href="{% url 'delete_order' order.id %}">Delete Order</a><br>
+        <div class="row marketing" >
+            <div class="col-lg-4">
+                {% if order.menu.image %}
+                    <img src="{{ order.menu.image.url }}" width="200px">
+                {% else %}
+                    <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
+                {% endif %}<br>
+            </div>
+            <div class="col-lg-8">
+                <h2>Merchant:{{ order.menu.merchant.username }}</h2>
+                <h2>Food:{{ order.menu.food_name }}</h2>
+                <h2>Date: {{ order.menu.meal_date|date:"D d M Y" }}</h2>
+                <h2>Quantity:{{ order.quantity }}</h2>
+                <h2>Location: {{ order.location }}</h2>
+                <a href="{% url 'edit_order' order.id %}" class="btn btn-success" role="button">Edit Order</a>
+                <a href="{% url 'delete_order' order.id %}" class="btn btn-success" role="button">Delete Order</a>
+            </div>
+        </div>
 
-{% endfor %}
+    {% endfor %}
 
-<h2>Finished Orders</h2>
+    <h2>Finished Orders</h2>
 
-<h3>Please review</h3>
+    <h3>Please review</h3>
 
-{% for order in un_reviewed %}
+    {% for order in un_reviewed %}
 
-    Merchant:{{ order.menu.merchant.username }}<br>
-    {% if order.menu.image %}
-        <img src="{{ order.menu.image.url }}" width="200px">
-    {% else %}
-        <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
-    {% endif %}<br>
-    Food:{{ order.menu.food_name }}<br>
-    Date: {{ order.menu.meal_date|date:"D d M Y" }}<br>
-    Quantity:{{ order.quantity }}<br>
-    <a href="{% url 'review_order' order.id %}">Review</a><br>
+        <div class="row marketing" >
+            <div class="col-lg-4">
+                {% if order.menu.image %}
+                    <img src="{{ order.menu.image.url }}" width="200px">
+                {% else %}
+                    <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
+                {% endif %}<br>
+            </div>
+            <div class="col-lg-8">
+                <h2>Merchant:{{ order.menu.merchant.username }}</h2>
+                <h2>Food:{{ order.menu.food_name }}</h2>
+                <h2>Date: {{ order.menu.meal_date|date:"D d M Y" }}</h2>
+                <h2>Quantity:{{ order.quantity }}</h2>
+                <a href="{% url 'review_order' order.id %}" class="btn btn-success" role="button">Review</a>
+            </div>
+        </div>
 
-{% endfor %}
+    {% endfor %}
 
-<h3>Already reviewed</h3>
+    <h3>Already reviewed</h3>
 
-{% for order in is_reviewed %}
+    {% for order in is_reviewed %}
 
-    Merchant:{{ order.menu.merchant.username }}<br>
-    {% if order.menu.image %}
-        <img src="{{ order.menu.image.url }}" width="200px">
-    {% else %}
-        <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
-    {% endif %}<br>
-    Food:{{ order.menu.food_name }}<br>
-    Date: {{ order.menu.meal_date|date:"D d M Y" }}<br>
-    Quantity:{{ order.quantity }}<br>
-    Rating: {{ order.rating }}<br>
-    Comment: {{ order.comment }}<br>
+        <div class="row marketing" >
+            <div class="col-lg-4">
+                {% if order.menu.image %}
+                    <img src="{{ order.menu.image.url }}" width="200px">
+                {% else %}
+                    <img src="{% static 'CSS/images/default.png' %}" class="img-responsive" width="200px">
+                {% endif %}<br>
+            </div>
+            <div class="col-lg-8">
+                <h2>Merchant:{{ order.menu.merchant.username }}</h2>
+                <h2>Food:{{ order.menu.food_name }}</h2>
+                <h2>Date: {{ order.menu.meal_date|date:"D d M Y" }}</h2>
+                <h2>Quantity:{{ order.quantity }}</h2>
+                <h2>Rating: {{ order.rating }}</h2>
+                <h2>Comment: {{ order.comment }}</h2>
+            </div>
+        </div>
 
-{% endfor %}
+    {% endfor %}
 
-</body>
-</html>
+{% endblock %}
