@@ -6,6 +6,12 @@ Final project for CMU 15637 (Web Application Development) (https://powerful-taig
 
 It tooks several seconds to load the page, as Heroku likes to sleep...
 
+### Technologies
+
+- Programming Languages: Python, JavaScript
+- Framework: Django, Twitter Bootstrap
+- DBMS: PostgreSQL
+
 ### What Stomach Savior does?
 
 I observe an interesting scenario: many CMU students use WeChat (Chinese equivalent of WhatsApp) to order food from nearby Chinese restaurants. Every student should be in several groups, that's how they can know what's todays' menu, and choose their favorite. For restaurants, they have to count orders one by one, to know how many students order the food.
