@@ -2,7 +2,7 @@
 
 @author: Yik San Chan
 
-Final project for CMU 15637 (Web Application Development). [Link to app](https://powerful-taiga-87227.herokuapp.com/)
+Final project for CMU 15637 (Web Application Development) (https://powerful-taiga-87227.herokuapp.com/).
 
 It tooks several seconds to load the page, as Heroku likes to sleep...
 
