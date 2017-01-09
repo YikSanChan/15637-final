@@ -1,8 +1,8 @@
-# 15637-final
+# 15637-final: Stomach Savior
 
-**Stomach Savior**: Final project for CMU 15637 (Web Application Development). 
+@author: Yik San Chan
 
-[Link to app](https://powerful-taiga-87227.herokuapp.com/)
+Final project for CMU 15637 (Web Application Development). [Link to app](https://powerful-taiga-87227.herokuapp.com/)
 
 It tooks several seconds to load the page, as Heroku likes to sleep...
 
@@ -12,3 +12,29 @@ I observe an interesting scenario: many CMU students use WeChat (Chinese equival
 
 Stomach Savior is to make it more efficient!!
 
+### Basic funtionalities
+
+For students:
+
+- See today's menu (with comments) by all registered merchants.
+- Place and delete orders.
+- Get notification about food delivery (time, location).
+- Add comments to orders.
+- Get recommendation on food.
+
+For merchants:
+
+- Post and edit today's menu (with images).
+- Add descriptive profile.
+- Manage order numbers and other information (preferred delivered time, pick-up location).
+- Send notification to students.
+- Get feedback from customers.
+
+### Advanced functionalities
+
+- If one buy more than he needs, he can re-sell it on food exchange platform.
+
+### To do
+
+- Online payment.
+- Better UI/UX design.
